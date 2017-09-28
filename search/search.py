@@ -90,33 +90,36 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     print
 
-    from game import Directions
-    s = Directions.SOUTH
-    w = Directions.WEST
-    n = Directions.NORTH
-    e = Directions.EAST
+    fringe = util.Stack()
+    coord = []
+    path = []
+    visited = set()
+    fringe.push(problem.getStartState())
 
-    myStack = []
-    myVisited = [problem.getStartState()]
+    while not fringe.isEmpty():
+        didPush = False
+        currentState = fringe.pop()
+        print "currentState", currentState
+        if problem.isGoalState(currentState):
+            print path
+            return path
+        visited.add(currentState)
 
-    currentState = problem.getStartState()
-    nextState = currentState
-    for i in range(1,100):
-        currentState = nextState    # state = (5, 5)
-        if problem.getSuccessors(currentState)[0][0] not in myVisited:
-            nextSuccessor = problem.getSuccessors(currentState)[0] # successor = ((5, 4), 'South', 1)
-        elif problem.getSuccessors(currentState)[1][0] not in myVisited:
-            nextSuccessor = problem.getSuccessors(currentState)[1]
-        # elif problem.getSuccessors(currentState)[2][0] not in myVisited:
-        #     nextSuccessor = problem.getSuccessors(currentState)[2]
-        # else:
-        #     nextSuccessor = problem.getSuccessors(currentState)[3]
-        myVisited.append(nextSuccessor[0])
-        nextState = nextSuccessor[0]  # nextState = (5,4)
-        myStack.append(nextSuccessor[1])                       # nextSuccessor[1] = 'South'
-        print(nextSuccessor[1])
-    return myStack
-
+        successors = problem.getSuccessors(currentState)
+        for successor in reversed(successors):
+            if successor[0] not in visited:
+                fringe.push(successor[0])
+                successorzz = successor[0]
+                successorz = successor[1]
+                didPush = True
+        if didPush == True:
+            path.append(successorz)
+            coord.append(successorzz)
+        if didPush == False:
+            del path[-1]
+            print "hey yo"
+        print path
+        print "help:", coord
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
