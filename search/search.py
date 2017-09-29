@@ -90,36 +90,34 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     print
 
-    fringe = util.Stack()
+    fringe = util.Stack() # my fringe
     coord = []
-    path = []
-    visited = set()
-    fringe.push(problem.getStartState())
-
+    path = [] # keeps track of the path
+    discovered = set()# keeps track of what is visited
+    finalPath = []
+    # set the start state
+    fringe.push((problem.getStartState(), '')) #add the start state to the fringe
+    # pathing
     while not fringe.isEmpty():
-        didPush = False
-        currentState = fringe.pop()
-        print "currentState", currentState
-        if problem.isGoalState(currentState):
-            print path
-            return path
-        visited.add(currentState)
-
-        successors = problem.getSuccessors(currentState)
+        # pop the first value from the fringe
+        currState = fringe.pop()
+        print "currrState" ,currState
+        # after popping add the the location of the one that was popped
+        
+        # check to see if it is a goal state and if it is return the path array
+        if problem.isGoalState(currState[0]):
+            directions = currState[1].split(".")
+            del directions [-1]
+            for direction in reversed(directions):
+                finalPath.append(direction)
+            return finalPath
+        discovered.add(currState[0])  #this state has now been added
+        successors = problem.getSuccessors(currState[0])  #get the successors of the current state as visited
+        
+        # if they are not already added then add them to the stack (in reversed order)
         for successor in reversed(successors):
-            if successor[0] not in visited:
-                fringe.push(successor[0])
-                successorzz = successor[0]
-                successorz = successor[1]
-                didPush = True
-        if didPush == True:
-            path.append(successorz)
-            coord.append(successorzz)
-        if didPush == False:
-            del path[-1]
-            print "hey yo"
-        print path
-        print "help:", coord
+            if successor[0] not in discovered:
+                fringe.push((successor[0], successor[1]+'.'+currState[1])) # add every coordinate to the fringe
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
