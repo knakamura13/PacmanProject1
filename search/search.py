@@ -90,19 +90,15 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     print
 
-    fringe = util.Stack() # my fringe
+    fringe = util.Stack() 	# my fringe
     coord = []
-    path = [] # keeps track of the path
-    discovered = set()# keeps track of what is visited
+    path = [] 				# keeps track of the path
+    discovered = set() 		# keeps track of what is visited
     finalPath = []
-    # set the start state
-    fringe.push((problem.getStartState(), '')) #add the start state to the fringe
-    # pathing
+    fringe.push((problem.getStartState(), '')) # add the start state to the fringe
+
     while not fringe.isEmpty():
-        # pop the first value from the fringe
-        currState = fringe.pop()
-        print "currrState" ,currState
-        # after popping add the the location of the one that was popped
+        currState = fringe.pop() 		# pop the first value from the fringe
         
         # check to see if it is a goal state and if it is return the path array
         if problem.isGoalState(currState[0]):
@@ -111,24 +107,74 @@ def depthFirstSearch(problem):
             for direction in reversed(directions):
                 finalPath.append(direction)
             return finalPath
-        discovered.add(currState[0])  #this state has now been added
-        successors = problem.getSuccessors(currState[0])  #get the successors of the current state as visited
+        discovered.add(currState[0])  	# this state has now been added
+        successors = problem.getSuccessors(currState[0])  # get the successors of the current state as visited
         
-        # if they are not already added then add them to the stack (in reversed order)
+        # if they are not already added, add them to the stack (in reversed order)
         for successor in reversed(successors):
             if successor[0] not in discovered:
                 fringe.push((successor[0], successor[1]+'.'+currState[1])) # add every coordinate to the fringe
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    fringe = util.Queue() 	# my fringe
+    coord = []
+    path = [] 				# keeps track of the path
+    discovered = set() 		# keeps track of what is visited
+    finalPath = []
+    fringe.push((problem.getStartState(), '')) # add the start state to the fringe
+
+    while not fringe.isEmpty():
+        currState = fringe.pop() 		# pop the first value from the fringe
+        
+        # check to see if it is a goal state and if it is return the path array
+        if problem.isGoalState(currState[0]):
+            directions = currState[1].split(".")
+            del directions [-1]
+            for direction in reversed(directions):
+                finalPath.append(direction)
+            return finalPath
+        discovered.add(currState[0])  	# this state has now been added
+        successors = problem.getSuccessors(currState[0])  # get the successors of the current state as visited
+        
+        # if they are not already added, add them to the stack (in reversed order)
+        for successor in reversed(successors):
+            if successor[0] not in discovered:
+                fringe.push((successor[0], successor[1]+'.'+currState[1])) # add every coordinate to the fringe
+
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    fringe = util.PriorityQueue() 	# my fringe
+    coord = []
+    path = [] 				# keeps track of the path
+    discovered = set() 		# keeps track of what is visited
+    finalPath = []
+    fringe.push((problem.getStartState(), ''), 0) # add the start state to the fringe
 
+    while not fringe.isEmpty():
+        currState = fringe.pop() 		# pop the first value from the fringe
+        
+        # check to see if it is a goal state and if it is return the path array
+        if problem.isGoalState(currState[0]):
+            directions = currState[1].split(".")
+            del directions [-1]
+            for direction in reversed(directions):
+                finalPath.append(direction)
+            return finalPath
+        discovered.add(currState[0])  	# this state has now been added
+        successors = problem.getSuccessors(currState[0])  # get the successors of the current state as visited
+        
+        # if they are not already added, add them to the stack (in reversed order)
+        for successor in reversed(successors):
+            if successor[0] not in discovered:
+            	tempPath = []
+            	directions = currState[1].split(".")
+            	del directions [-1]
+            	for direction in reversed(directions):
+                	tempPath.append(direction)
+                print "current Cost", problem.getCostOfActions(tempPath)
+                fringe.push((successor[0], successor[1]+'.'+currState[1]), problem.getCostOfActions(tempPath)) # add every coordinate to the fringe
+ 
 def nullHeuristic(state, problem=None):
     """
     A heuristic function estimates the cost from the current state to the nearest

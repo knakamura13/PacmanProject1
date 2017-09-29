@@ -224,6 +224,7 @@ class PositionSearchProblem(search.SearchProblem):
             x, y = int(x + dx), int(y + dy)
             if self.walls[x][y]: return 999999
             cost += self.costFn((x,y))
+            print "current Cost",cost
         return cost
 
 class StayEastSearchAgent(SearchAgent):
