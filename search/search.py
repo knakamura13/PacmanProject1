@@ -156,7 +156,10 @@ def breadthFirstSearch(problem):
         for successor in successors:
             if successor[0] not in discovered:
                 #add to the fringe
-                fringe.push((successor[0], successor[0][1] + '.' + currState[0][1]))#copy the parent path and append the successor
+                fringe.push((successor[0], successor[1] + '.' + currState[1]))#copy the parent path and append the successor
+    
+    print "Dr. Dan DEBUG - If your code makes it here, then we left the while loop w/o finding solution"
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
