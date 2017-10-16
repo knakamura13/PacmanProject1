@@ -289,21 +289,26 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.visited = []
 
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        player = (self.startingPosition, self.corners)
+        return player
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #return true if self.corners is empty
+        if self.corners:
+            return False
+        else:
+            return True
 
     def getSuccessors(self, state):
         """
@@ -326,6 +331,12 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+            x,y = state[0]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            if not self.walls[nextx][nexty]:
+                nextState = (nextx, nexty)
+                successors.append((nextState, self.corners, action, 1))
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
@@ -485,8 +496,12 @@ class ClosestDotSearchAgent(SearchAgent):
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
+
+
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        x,y = startPosition
+        return []
+
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -522,7 +537,10 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        for row in self.food:
+            if True in row:
+                return False
+        return True
 
 def mazeDistance(point1, point2, gameState):
     """

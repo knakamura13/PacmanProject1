@@ -109,14 +109,11 @@ def depthFirstSearch(problem):
         discovered.add(currState[0])
         #get the successors of the current state as visited
         successors = problem.getSuccessors(currState[0])
-        #if they are not already added then add them to the stack (in reversed order)
-        for successor in reversed(successors):
+        #if they are not already added then add them to the stack
+        for successor in successors:
             if successor[0] not in discovered:
                 #add to the fringe
                 fringe.push((successor[0], successor[1]+'.'+currState[1]))#copy the parent path and append the successor
-        
-        
-        
 
 
 def breadthFirstSearch(problem):
@@ -136,7 +133,7 @@ def breadthFirstSearch(problem):
     discovered = set()# keeps track of what is visited
     finalPath = []
     # set the start state
-    fringe.push((problem.getStartState(), '')) #add the start state to the fringe
+    fringe.push(( problem.getStartState(), '')) #add the start state to the fringe
     #path stuff
     while not fringe.isEmpty():
         #pop the first value from the fringe
@@ -155,11 +152,11 @@ def breadthFirstSearch(problem):
         discovered.add(currState[0])
         #get the successors of the current state as visited
         successors = problem.getSuccessors(currState[0])
-        #if they are not already added then add them to the stack (in reversed order)
-        for successor in reversed(successors):
+        #if they are not already added then add them to the stack
+        for successor in successors:
             if successor[0] not in discovered:
                 #add to the fringe
-                fringe.push((successor[0], successor[1]+'.'+currState[1]))#copy the parent path and append the successor
+                fringe.push((successor[0], successor[0][1] + '.' + currState[0][1]))#copy the parent path and append the successor
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
@@ -197,8 +194,8 @@ def uniformCostSearch(problem):
         discovered.add(currState[0])
         #get the successors of the current state as visited
         successors = problem.getSuccessors(currState[0])
-        #if they are not already added then add them to the stack (in reversed order)
-        for successor in reversed(successors):
+        #if they are not already added then add them to the stack
+        for successor in successors:
             if successor[0] not in discovered:
                 #add to the fringe
                 tempPath = []
@@ -235,7 +232,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     while not fringe.isEmpty():
         #pop the first value from the fringe
         currState = fringe.pop()
-        #print "currrState" ,currState THIS IS FOR DEBUGGING
         #after popping add the the location of the one that was popped
         
         #check to see if it is a goal state and if it is return the path array
@@ -249,8 +245,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         discovered.add(currState[0])
         #get the successors of the current state as visited
         successors = problem.getSuccessors(currState[0])
-        #if they are not already added then add them to the stack (in reversed order)
-        for successor in reversed(successors):
+        #if they are not already added then add them to the stack
+        for successor in successors:
             if successor[0] not in discovered:
                 #add to the fringe
                 tempPath = []
@@ -258,7 +254,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 del directions [-1] #there is an extra element which is blank so delete it
                 for direction in reversed(directions): #reverse to get the pathing
                     tempPath.append(direction) # add each element to the final pathing
-                fringe.push((successor[0], successor[1]+'.'+currState[1]), problem.getCostOfActions(tempPath)+util.manhattanDistance(currState[0], [1,1]))#copy the parent path and append the successor
+                hCost = heuristic(currState[0],problem)
+                fringe.push((successor[0], successor[1]+'.'+currState[1]), len(tempPath) + hCost)#copy the parent path and append the successor
 
 # Abbreviations
 bfs = breadthFirstSearch
