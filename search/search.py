@@ -19,6 +19,7 @@ Pacman agents (in searchAgents.py).
 
 import util
 
+
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
@@ -66,7 +67,8 @@ def tinyMazeSearch(problem):
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
-    return  [s, s, w, s, w, w, s, w]
+    return [s, s, w, s, w, w, s, w]
+
 
 def depthFirstSearch(problem):
     """
@@ -84,42 +86,43 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     print
 
-    fringe = util.Stack() # my fringe
+    fringe = util.Stack()  # my fringe
     coord = []
-    path = [] # keeps track of the path
-    discovered = set()# keeps track of what is visited
+    path = []  # keeps track of the path
+    discovered = set()  # keeps track of what is visited
     finalPath = []
     # set the start state
-    fringe.push((problem.getStartState(), '')) #add the start state to the fringe
-    #path stuff
+    fringe.push((problem.getStartState(), ''))  # add the start state to the fringe
+    # path stuff
     while not fringe.isEmpty():
-        #pop the first value from the fringe
+        # pop the first value from the fringe
         currState = fringe.pop()
-        print "currrState" ,currState #THIS IS FOR DEBUGGING
-        #after popping add the the location of the one that was popped
-        
-        #check to see if it is a goal state and if it is return the path array
+        print "currrState", currState  # THIS IS FOR DEBUGGING
+        # after popping add the the location of the one that was popped
+
+        # check to see if it is a goal state and if it is return the path array
         if problem.isGoalState(currState[0]):
-            directions = currState[1].split(".") #split using '.' as a delimiter
-            del directions [-1] #there is an extra element which is blank so delete it
-            for direction in reversed(directions): #reverse to get the pathing
-                finalPath.append(direction) # add each element to the final pathing
-            return finalPath #RETURN TO THE FINAL PATH AND WIN!!!!!!!!!!!!
-        #this state has now been added
+            directions = currState[1].split(".")  # split using '.' as a delimiter
+            del directions[-1]  # there is an extra element which is blank so delete it
+            for direction in reversed(directions):  # reverse to get the pathing
+                finalPath.append(direction)  # add each element to the final pathing
+            return finalPath  # RETURN TO THE FINAL PATH AND WIN!!!!!!!!!!!!
+        # this state has now been added
         discovered.add(currState[0])
-        #get the successors of the current state as visited
+        # get the successors of the current state as visited
         successors = problem.getSuccessors(currState[0])
-        #if they are not already added then add them to the stack
+        # if they are not already added then add them to the stack
         for successor in successors:
             if successor[0] not in discovered:
-                #add to the fringe
-                fringe.push((successor[0], successor[1]+'.'+currState[1]))#copy the parent path and append the successor
+                # add to the fringe
+                fringe.push(
+                    (successor[0], successor[1] + '.' + currState[1]))  # copy the parent path and append the successor
 
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    
+
     print "------------------------------------------------------------------------------"
     print
     print "Start:", problem.getStartState()
@@ -127,44 +130,48 @@ def breadthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     print
 
-    fringe = util.Queue() # my fringe
+    fringe = util.Queue()  # my fringe
     coord = []
-    path = [] # keeps track of the path
-    discovered = set()# keeps track of what is visited
+    path = []  # keeps track of the path
+    discovered = set()  # keeps track of what is visited
     finalPath = []
     # set the start state
-    fringe.push(( problem.getStartState(), '')) #add the start state to the fringe
-    #path stuff
+    fringe.push((problem.getStartState(), ''))  # add the start state to the fringe
+    # path stuff
     while not fringe.isEmpty():
-        #pop the first value from the fringe
+        # pop the first value from the fringe
         currState = fringe.pop()
-        #print "currrState" ,currState THIS IS FOR DEBUGGING
-        #after popping add the the location of the one that was popped
-        
-        #check to see if it is a goal state and if it is return the path array
+        if currState[0] not in discovered:
+            discovered.add(currState[0])
+            successors = problem.getSuccessors(currState[0])
+            # if they are not already added then add them to the stack
+            for successor in successors:
+                ##if successor[0] not in discovered:
+                # add to the fringe
+                fringe.push(
+                    (successor[0], successor[1] + '.' + currState[1]))  # copy the parent path and append the successor
+
+        # print "currrState" ,currState THIS IS FOR DEBUGGING
+        # after popping add the the location of the one that was popped
+        # check to see if it is a goal state and if it is return the path array
         if problem.isGoalState(currState[0]):
-            directions = currState[1].split(".") #split using '.' as a delimiter
-            del directions [-1] #there is an extra element which is blank so delete it
-            for direction in reversed(directions): #reverse to get the pathing
-                finalPath.append(direction) # add each element to the final pathing
-            return finalPath #RETURN TO THE FINAL PATH AND WIN!!!!!!!!!!!!
-        #this state has now been added
-        discovered.add(currState[0])
-        #get the successors of the current state as visited
-        successors = problem.getSuccessors(currState[0])
-        #if they are not already added then add them to the stack
-        for successor in successors:
-            if successor[0] not in discovered:
-                #add to the fringe
-                fringe.push((successor[0], successor[1] + '.' + currState[1]))#copy the parent path and append the successor
-    
+            directions = currState[1].split(".")  # split using '.' as a delimiter
+            del directions[-1]  # there is an extra element which is blank so delete it
+            for direction in reversed(directions):  # reverse to get the pathing
+                finalPath.append(direction)  # add each element to the final pathing
+            return finalPath  # RETURN TO THE FINAL PATH AND WIN!!!!!!!!!!!!
+            # this state has now been added
+
+            # get the successors of the current state as visited
+
     print "Dr. Dan DEBUG - If your code makes it here, then we left the while loop w/o finding solution"
     return []
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    
+
     print "------------------------------------------------------------------------------"
     print
     print "Start:", problem.getStartState()
@@ -172,41 +179,43 @@ def uniformCostSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     print
 
-    fringe = util.PriorityQueue() # my fringe
+    fringe = util.PriorityQueue()  # my fringe
     coord = []
-    path = [] # keeps track of the path
-    discovered = set()# keeps track of what is visited
+    path = []  # keeps track of the path
+    discovered = set()  # keeps track of what is visited
     finalPath = []
     # set the start state
-    fringe.push((problem.getStartState(), ''), 0) #add the start state to the fringe
-    #path stuff
+    fringe.push((problem.getStartState(), ''), 0)  # add the start state to the fringe
+    # path stuff
     while not fringe.isEmpty():
-        #pop the first value from the fringe
+        # pop the first value from the fringe
         currState = fringe.pop()
-        #print "currrState" ,currState THIS IS FOR DEBUGGING
-        #after popping add the the location of the one that was popped
-        
-        #check to see if it is a goal state and if it is return the path array
+        # print "currrState" ,currState THIS IS FOR DEBUGGING
+        # after popping add the the location of the one that was popped
+
+        # check to see if it is a goal state and if it is return the path array
         if problem.isGoalState(currState[0]):
-            directions = currState[1].split(".") #split using '.' as a delimiter
-            del directions [-1] #there is an extra element which is blank so delete it
-            for direction in reversed(directions): #reverse to get the pathing
-                finalPath.append(direction) # add each element to the final pathing
-            return finalPath #RETURN TO THE FINAL PATH AND WIN!!!!!!!!!!!!
-        #this state has now been added
+            directions = currState[1].split(".")  # split using '.' as a delimiter
+            del directions[-1]  # there is an extra element which is blank so delete it
+            for direction in reversed(directions):  # reverse to get the pathing
+                finalPath.append(direction)  # add each element to the final pathing
+            return finalPath  # RETURN TO THE FINAL PATH AND WIN!!!!!!!!!!!!
+        # this state has now been added
         discovered.add(currState[0])
-        #get the successors of the current state as visited
+        # get the successors of the current state as visited
         successors = problem.getSuccessors(currState[0])
-        #if they are not already added then add them to the stack
+        # if they are not already added then add them to the stack
         for successor in successors:
             if successor[0] not in discovered:
-                #add to the fringe
+                # add to the fringe
                 tempPath = []
-                directions = currState[1].split(".") #split using '.' as a delimiter
-                del directions [-1] #there is an extra element which is blank so delete it
-                for direction in reversed(directions): #reverse to get the pathing
-                    tempPath.append(direction) # add each element to the final pathing
-                fringe.push((successor[0], successor[1]+'.'+currState[1]), problem.getCostOfActions(tempPath))#copy the parent path and append the successor
+                directions = currState[1].split(".")  # split using '.' as a delimiter
+                del directions[-1]  # there is an extra element which is blank so delete it
+                for direction in reversed(directions):  # reverse to get the pathing
+                    tempPath.append(direction)  # add each element to the final pathing
+                fringe.push((successor[0], successor[1] + '.' + currState[1]),
+                            problem.getCostOfActions(tempPath))  # copy the parent path and append the successor
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -214,6 +223,7 @@ def nullHeuristic(state, problem=None):
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
@@ -224,41 +234,46 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     print
 
-    fringe = util.PriorityQueue() # my fringe
+    fringe = util.PriorityQueue()  # my fringe
     coord = []
-    path = [] # keeps track of the path
-    discovered = set()# keeps track of what is visited
+    path = []  # keeps track of the path
+    discovered = set()  # keeps track of what is visited
     finalPath = []
     # set the start state
-    fringe.push((problem.getStartState(), ''), 0) #add the start state to the fringe
-    #path stuff
+    fringe.push((problem.getStartState(), ''), 0)  # add the start state to the fringe
+    # path stuff
     while not fringe.isEmpty():
-        #pop the first value from the fringe
+        # pop the first value from the fringe
         currState = fringe.pop()
-        #after popping add the the location of the one that was popped
-        
-        #check to see if it is a goal state and if it is return the path array
-        if problem.isGoalState(currState[0]):
-            directions = currState[1].split(".") #split using '.' as a delimiter
-            del directions [-1] #there is an extra element which is blank so delete it
-            for direction in reversed(directions): #reverse to get the pathing
-                finalPath.append(direction) # add each element to the final pathing
-            return finalPath #RETURN TO THE FINAL PATH AND WIN!!!!!!!!!!!!
-        #this state has now been added
-        discovered.add(currState[0])
-        #get the successors of the current state as visited
-        successors = problem.getSuccessors(currState[0])
-        #if they are not already added then add them to the stack
-        for successor in successors:
-            if successor[0] not in discovered:
-                #add to the fringe
+        # after popping add the the location of the one that was popped
+        if currState[0] not in discovered:
+            discovered.add(currState[0])
+            successors = problem.getSuccessors(currState[0])
+            for successor in successors:
+
+                # add to the fringe
                 tempPath = []
-                directions = currState[1].split(".") #split using '.' as a delimiter
-                del directions [-1] #there is an extra element which is blank so delete it
-                for direction in reversed(directions): #reverse to get the pathing
-                    tempPath.append(direction) # add each element to the final pathing
-                hCost = heuristic(currState[0],problem)
-                fringe.push((successor[0], successor[1]+'.'+currState[1]), len(tempPath) + hCost)#copy the parent path and append the successor
+                directions = currState[1].split(".")  # split using '.' as a delimiter
+                del directions[-1]  # there is an extra element which is blank so delete it
+                for direction in reversed(directions):  # reverse to get the pathing
+                    tempPath.append(direction)  # add each element to the final pathing
+                hCost = heuristic(currState[0], problem)
+                fringe.push((successor[0], successor[1] + '.' + currState[1]),
+                            len(tempPath) + hCost)  # copy the parent path and append the successor
+
+        # check to see if it is a goal state and if it is return the path array
+        if problem.isGoalState(currState[0]):
+            directions = currState[1].split(".")  # split using '.' as a delimiter
+            del directions[-1]  # there is an extra element which is blank so delete it
+            for direction in reversed(directions):  # reverse to get the pathing
+                finalPath.append(direction)  # add each element to the final pathing
+            return finalPath  # RETURN TO THE FINAL PATH AND WIN!!!!!!!!!!!!
+            # this state has now been added
+
+            # get the successors of the current state as visited
+
+            # if they are not already added then add them to the stack
+
 
 # Abbreviations
 bfs = breadthFirstSearch

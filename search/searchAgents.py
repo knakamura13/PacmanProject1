@@ -497,8 +497,10 @@ def foodHeuristic(state, problem):
                 total = dx+dy
                 heur.append(total)
     heur.sort()
-    heur.reverse()
-    return heur[0]
+    if len(heur) == 0:
+        return 0
+    else:
+        return heur[-1]
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
