@@ -380,7 +380,18 @@ def cornersHeuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0  # Default to trivial solution
+    x,y = state[0]
+    heur = []
+    for corner in corners:
+        x1 = corner[0]
+        y1 = corner[1]
+        dx = abs(x1-x)
+        dy = abs(y1-y)
+        total = dx+dy
+        heur.append(total)
+    heur.sort()
+    heur.reverse()
+    return heur[0]
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -474,7 +485,20 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    x,y = position
+    heur = []
+    for index1, foodRow in enumerate(foodGrid):
+        for index2, foodCol in enumerate(foodRow):
+            if foodCol == True:
+                x1 = index1
+                y1 = index2
+                dx = abs(x1-x)
+                dy = abs(y1-y)
+                total = dx+dy
+                heur.append(total)
+    heur.sort()
+    heur.reverse()
+    return heur[0]
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -505,9 +529,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        x, y = startPosition
-        return []
-
+        return search.breadthFirstSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -543,10 +565,11 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x, y = state
 
         "*** YOUR CODE HERE ***"
-        for row in self.food:
-            if True in row:
-                return False
-        return True
+        newFoodArray = self.food
+        if newFoodArray[x][y] == True:
+            newFoodArray[x][y] = False
+            return True
+        return False
 
 def mazeDistance(point1, point2, gameState):
     """
